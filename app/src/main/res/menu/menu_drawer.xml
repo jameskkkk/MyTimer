@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_time_period"
+        android:icon="@mipmap/ic_time_period"
+        android:title="WORKING PERIOD" />
+
+    <item
+        android:id="@+id/menu_item_rx"
+        android:icon="@mipmap/ic_time_period"
+        android:title="RX" />
+
+    <item
+        android:id="@+id/menu_item_about"
+        android:icon="@mipmap/ic_about"
+        android:title="ABOUT"/>
+</menu>

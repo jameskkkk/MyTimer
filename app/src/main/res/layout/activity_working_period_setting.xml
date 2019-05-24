@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wave="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WorkingPeriodSettingActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:background="@drawable/bg_top">
+
+            <com.john.waveview.WaveView
+                android:id="@+id/wv_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/yellow_normal"
+                wave:above_wave_color="#FFFFFF"
+                wave:blow_wave_color="#FFFFFF"
+                wave:progress="80"
+                wave:wave_height="little"
+                wave:wave_hz="normal"
+                wave:wave_length="little">
+
+            </com.john.waveview.WaveView>
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="start"
+                android:textSize="40dp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="~"
+            android:textSize="40dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:background="@drawable/bg_bottom">
+
+        <com.john.waveview.WaveView
+            android:id="@+id/wv_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            wave:above_wave_color="#000000"
+            wave:blow_wave_color="#000000"
+            wave:progress="80"
+            wave:wave_height="little"
+            wave:wave_hz="normal"
+            wave:wave_length="little">
+
+        </com.john.waveview.WaveView>
+
+        <TextView
+            android:id="@+id/tv_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="end"
+            android:textSize="40dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"/>
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>

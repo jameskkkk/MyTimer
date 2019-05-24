@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#616161</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#D81B60</color>
+    <!-- background color -->
+    <color name="blue_normal">#2196F3</color>
+    <color name="blue_click">#64B5F6</color>
+    <color name="red_normal">#D32F2F</color>
+    <color name="red_click">#F44336</color>
+    <color name="cyan_normal">#0097A7</color>
+    <color name="cyan_click">#00BCD4</color>
+    <color name="green_normal">#388E3C</color>
+    <color name="green_click">#4CAF50</color>
+    <color name="yellow_normal">#FBC02D</color>
+    <color name="yellow_click">#FFEB3B</color>
+    <color name="gray_normal">#616161</color>
+    <color name="gray_click">#9E9E9E</color>
+    <!-- weather -->
+    <color name="weather_text">#979797</color>
+</resources>

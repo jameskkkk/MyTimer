@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MyTimer</string>
+    <string name="title_activity_working_period_setting">WorkingPeriodSettingActivity</string>
+</resources>
