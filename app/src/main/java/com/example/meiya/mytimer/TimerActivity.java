@@ -24,11 +24,19 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class TimerActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -46,8 +54,8 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     private WaveView waveView;
     private FloatingActionMenu fabMenu;
     private FloatingActionButton fabBlue, fabRed, fabCyan, fabGreen, fabYellow, fabGray;
-    private Timer mTimer;
     private String date;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +96,24 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 .subscribe(new Observer<WeatherInfoBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "onSubscribe");
+                        Log.i(TAG, "initWeatherInfo onSubscribe");
                     }
 
                     @Override
                     public void onNext(WeatherInfoBean weatherInfoBean) {
-                        Log.i(TAG, "onSubscribe");
+                        Log.i(TAG, "initWeatherInfo onSubscribe");
                         tvWeather.setText(weatherInfoBean.getMain().getTemp() + " \u2103");
                         setWeatherImg(weatherInfoBean.getWeather().get(0).getIcon());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG, "onError: " + e.getMessage());
+                        Log.i(TAG, "initWeatherInfo onError: " + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.i(TAG, "onComplete");
+                        Log.i(TAG, "initWeatherInfo onComplete");
                     }
                 });
     }
@@ -116,9 +124,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "onResume");
         initWeatherInfo();
         getStartAndEndTime();
-        if (mTimer == null) {
-            mTimer = new Timer();
-        }
         getPercentage();
     }
 
@@ -126,8 +131,9 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "onPause");
-        mTimer.cancel();
-        mTimer = null;
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setWeatherImg(String icon) {
@@ -189,34 +195,35 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void getPercentage() {
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
+        disposable = Observable.interval(0, 1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void run() {
-                        final long currentTime = System.currentTimeMillis();
-                        final String percentage;
+                    public void accept(Long aLong) throws Exception {
+                        Log.i(TAG, "getPercentage: " + aLong);
+                        long currentTime = System.currentTimeMillis();
+                        String percentage;
                         DecimalFormat decimalFormat = new DecimalFormat("#.000000");
                         if (currentTime < start) {
                             percentage = "Not yet...";
                         } else if (currentTime > end) {
                             percentage = "Off already...";
                         } else {
-                            percentage = String.valueOf(decimalFormat.format((currentTime - start)/(float) duration * 100)) + "%";
+                            percentage = String.valueOf(decimalFormat.format((currentTime - start) / (float) duration * 100)) + "%";
                         }
-                        TimerActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                etvPercentage.animateText(percentage);
-                                waveView.setProgress((int) ((currentTime - start) * 100 / duration));
-                            }
-                        });
+                        etvPercentage.animateText(percentage);
+                        waveView.setProgress((int) ((currentTime - start) * 100 / duration));
                     }
-                }).start();
-            }
-        }, 0, 1000);
+                });
     }
 
     @Override
@@ -287,6 +294,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             case R.id.menu_item_rx:
                 Intent rxintent = new Intent(TimerActivity.this, RxActivity.class);
                 TimerActivity.this.startActivity(rxintent);
+                break;
             case R.id.menu_item_about:
                 Log.i(TAG, "menu_item_about");
                 break;

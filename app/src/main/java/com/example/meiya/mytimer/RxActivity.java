@@ -84,20 +84,6 @@ public class RxActivity extends AppCompatActivity implements View.OnClickListene
                         Log.i(TAG, "onComplete");
                     }
                 });
-//        Call<WeatherInfoBean> call = service.getWeatherById(Constants.XIAMEN_ID, Constants.KEY);
-//        try {
-//            res = call.execute().body().getWeather().get(0).getDescription();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, "Exception: " + e.getMessage());
-//        }
-//        Call call = service.getWeather("London,uk", Constants.KEY);
-//        try {
-//            res = call.execute().body().toString();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, "Exception: " + e.getMessage());
-//        }
     }
 
     private void weatherTask() {
@@ -164,7 +150,7 @@ public class RxActivity extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_msg:
-                getWeather();
+//                getWeather();
 //                weatherTask();
                 Observable<WeatherInfoBean> observable = WeatherUtils.getInstance(this).getWeather();
                 observable.subscribeOn(Schedulers.io())
